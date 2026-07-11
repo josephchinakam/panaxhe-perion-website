@@ -1,6 +1,6 @@
 // // api.js - Core Security Matrix API Request Router
 // const API_BASE_URL = '/api/admins'; // Replace with your actual server endpoint
-const BASE_URL = 'http://localhost:8787'; 
+const BASE_URL = 'https://perion-institute.josephchinakam.workers.dev'; 
 
 async function handleResponse(response) {
   if (!response.ok) {
