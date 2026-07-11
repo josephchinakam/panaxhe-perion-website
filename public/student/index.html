@@ -180,7 +180,7 @@
         document.getElementById('student-id').textContent = `ID: ${data.id}`;
         document.getElementById('student-initials').textContent = data.initials || 'ST';
 
-        document.getElementById('profile-id').href =  `profile.html?id=${data.id}`;
+        document.getElementById('profile-id').href =  `profile.html?id=${data.email}`;
 
         // 2. Render Course details card
         document.getElementById('course-title').textContent = data.course.title;

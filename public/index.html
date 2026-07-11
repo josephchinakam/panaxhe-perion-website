@@ -219,13 +219,17 @@
 
         try{
 
-          const { instituteData, stats } = await fetchBaseData();
+          const { state, instituteData, stats } = await fetchBaseData();
+          const partners = await fetchPartners();
+
+          if (state != 200) {
+            window.location.href = 'admin/setup.html';
+          }
+
           injectDynamicData(instituteData, stats);
 
           const partnersTrack = document.getElementById('partners-track');
-          if (partnersTrack) {
-            const partners = await fetchPartners();
-            console.log(partners)
+          if (partnersTrack) {            
             renderPartners(partners, partnersTrack);
           }          
 

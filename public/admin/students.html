@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Portal - Manage Students</title>
   <link rel="stylesheet" href="../css/style.css">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
   <style>
     /* Admin Specific Overrides & Layout Utilities */
     .admin-grid {
@@ -15,7 +15,7 @@
     }
     @media (min-width: 1024px) {
       .admin-grid {
-        grid-template-columns: 350px 1fr;
+        grid-template-columns: 380px 1fr;
       }
     }
     
@@ -36,6 +36,7 @@
     .admin-table th, .admin-table td {
       padding: 1rem 1.5rem;
       border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
     }
     .admin-table th {
       background-color: var(--bg-secondary);
@@ -76,6 +77,9 @@
     .sticky-form {
       position: sticky;
       top: calc(var(--nav-height) + 2rem);
+      max-height: 85vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
     }
   </style>
 </head>
@@ -150,6 +154,82 @@
                 <input type="password" id="stu-password" class="form-control" placeholder="••••••••" required>
               </div>
 
+              <div class="form-group">
+                <label class="form-label" for="stu-dept">Department</label>
+                <input type="text" id="stu-dept" class="form-control" placeholder="Sciences" value="General">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-year">Academic Year</label>
+                <input type="text" id="stu-year" class="form-control" placeholder="2026" value="2026">
+              </div>
+
+              <!-- Course Linkage Segment -->
+              <h4 class="mt-6 mb-2" style="font-size: 1rem; color: var(--text-primary); border-top: 1px solid var(--border-color); padding-top: 1rem;">Curriculum Placement</h4>
+              
+              <div class="form-group">
+                <label class="form-label" for="stu-course-id">Course Code / ID</label>
+                <input type="text" id="stu-course-id" class="form-control" placeholder="cs-01" value="unassigned">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-course-title">Course Title</label>
+                <input type="text" id="stu-course-title" class="form-control" placeholder="Applied Artificial Intelligence & Data Science">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-course-status">Enrollment Status</label>
+                <select id="stu-course-status" class="form-control">
+                  <option value="Active">Active</option>
+                  <option value="Suspended">Suspended</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Graduated">Graduated</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-class-duration">Class Duration</label>
+                <input type="text" id="stu-class-duration" class="form-control" placeholder="6 Months" value="N/A">
+              </div>
+
+              <!-- Ledger Billing Segment -->
+              <h4 class="mt-6 mb-2" style="font-size: 1rem; color: var(--text-primary); border-top: 1px solid var(--border-color); padding-top: 1rem;">Ledger Statement</h4>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-pay-status">Payment Status</label>
+                <select id="stu-pay-status" class="form-control">
+                  <option value="Incomplete">Incomplete</option>
+                  <option value="Complete">Complete</option>
+                  <option value="Deferred">Deferred</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-pay-badge">Payment Alert Badge</label>
+                <input type="text" id="stu-pay-badge" class="form-control" placeholder="Note!, Paid, New" value="Note!">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-pay-amount">Amount Contributed ($)</label>
+                <input type="number" id="stu-pay-amount" class="form-control" placeholder="0" min="0" value="0">
+              </div>
+
+              <!-- Social Identity Segment -->
+              <h4 class="mt-6 mb-2" style="font-size: 1rem; color: var(--text-primary); border-top: 1px solid var(--border-color); padding-top: 1rem;">Social Indexes</h4>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-linkedin">LinkedIn URL</label>
+                <input type="text" id="stu-linkedin" class="form-control" placeholder="www.linkedin.com/in/handle">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="stu-github">GitHub Handle</label>
+                <input type="text" id="stu-github" class="form-control" placeholder="www.github.com/handle">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="stu-twitter">Twitter / X</label>
+                <input type="text" id="stu-twitter" class="form-control" placeholder="www.x.com/handle">
+              </div>
+
               <div class="flex gap-2 mt-8">
                 <button type="submit" id="submit-btn" class="btn btn-primary" style="flex: 1;">Save Student Record</button>
                 <button type="button" id="cancel-btn" class="btn btn-outline" style="display: none;">Cancel</button>
@@ -165,10 +245,10 @@
               <thead>
                 <tr>
                   <th>Student Info</th>
-                  <th>ID Number</th>
-                  <th>Contact Details</th>
-                  <th>Address</th>
-                  <th style="width: 150px;">Actions</th>
+                  <th>ID / Dept</th>
+                  <th>Curriculum Track</th>
+                  <th>Finances</th>
+                  <th style="width: 130px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="student-table-body">
@@ -191,7 +271,6 @@
   </footer>
 
   <script type="module">
-    // import { initTheme } from '../js/theme.js';
     import { StudentAPI } from '../js/api.js';
 
     /* --- Theme Toggle Engine --- */
@@ -222,6 +301,21 @@
     const inputPhone = document.getElementById('stu-phone');
     const inputAddress = document.getElementById('stu-address');
     const inputPassword = document.getElementById('stu-password');
+    const inputDept = document.getElementById('stu-dept');
+    const inputYear = document.getElementById('stu-year');
+    
+    // Nested mappings configurations targets
+    const inputCourseId = document.getElementById('stu-course-id');
+    const inputCourseTitle = document.getElementById('stu-course-title');
+    const inputCourseStatus = document.getElementById('stu-course-status');
+    const inputClassDuration = document.getElementById('stu-class-duration');
+    const inputPayStatus = document.getElementById('stu-pay-status');
+    const inputPayBadge = document.getElementById('stu-pay-badge');
+    const inputPayAmount = document.getElementById('stu-pay-amount');
+    
+    const inputLinkedin = document.getElementById('stu-linkedin');
+    const inputGithub = document.getElementById('stu-github');
+    const inputTwitter = document.getElementById('stu-twitter');
 
     // Retrieve live record maps directly via internal API routing pipeline loops
     async function syncStudentDirectory() {
@@ -248,14 +342,30 @@
         const row = document.createElement('tr');
         const uniqueId = student.id;
         
+        // Safely extract values out of incoming nested maps structure defaults
+        const courseTitle = student.course?.title || 'Unassigned Course';
+        const courseStatus = student.course?.status || 'Pending';
+        const payStatus = student.payment?.status || 'Incomplete';
+        const payAmount = student.payment?.amount !== undefined ? student.payment.amount : 0;
+        
         row.innerHTML = `
           <td>
             <strong>${escapeHtml(student.name)}</strong><br>
-            <small style="color: var(--text-tertiary);">${escapeHtml(student.email)}</small>
+            <small style="color: var(--text-tertiary);">${escapeHtml(student.email)}</small><br>
+            <small style="color: var(--text-tertiary); font-size: 0.8rem;">${escapeHtml(student.phone)}</small>
           </td>
-          <td><span class="text-primary" style="font-weight:600;">${escapeHtml(student.id)}</span></td>
-          <td>${escapeHtml(student.phone)}</td>
-          <td><span style="font-size:0.85rem;">${escapeHtml(student.address)}</span></td>
+          <td>
+            <span class="text-primary" style="font-weight:600;">${escapeHtml(student.id)}</span><br>
+            <small style="font-size:0.8rem; text-transform:uppercase;">${escapeHtml(student.department || 'General')}</small>
+          </td>
+          <td>
+            <span style="font-size: 0.9rem; font-weight: 500;">${escapeHtml(courseTitle)}</span><br>
+            <small class="badge" style="padding: 0.1rem 0.4rem; font-size: 0.75rem; background: var(--bg-secondary);">${escapeHtml(courseStatus)}</small>
+          </td>
+          <td>
+            <span style="font-size: 0.9rem; font-weight: 600;">$${payAmount}</span><br>
+            <small style="color: ${payStatus === 'Complete' ? '#10b981' : '#f59e0b'}; font-size: 0.8rem;">${escapeHtml(payStatus)}</small>
+          </td>
           <td>
             <div class="actions-cell">
               <button class="btn btn-outline btn-sm" onclick="editStudent('${uniqueId}')">Edit</button>
@@ -271,13 +381,33 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Form nested object layout logic trees required for backend structure alignment
       const studentData = {
         id: inputId.value,
         name: inputName.value,
         email: inputEmail.value,
         phone: inputPhone.value,
         address: inputAddress.value,
-        password: inputPassword.value
+        password: inputPassword.value,
+        department: inputDept.value || 'General',
+        year: inputYear.value || '2026',
+        linkedin: inputLinkedin.value || '',
+        github: inputGithub.value || '',
+        twitter: inputTwitter.value || '',
+        course: {
+          id: inputCourseId.value || 'unassigned',
+          title: inputCourseTitle.value || 'Unassigned Course',
+          status: inputCourseStatus.value || 'Active'
+        },
+        payment: {
+          status: inputPayStatus.value || 'Incomplete',
+          badge: inputPayBadge.value || 'Note!',
+          amount: parseFloat(inputPayAmount.value) || 0
+        },
+        class: {
+          title: inputCourseTitle.value || 'Class of 2026',
+          duration: inputClassDuration.value || 'N/A'
+        }
       };
 
       try {
@@ -312,6 +442,21 @@
       inputPhone.value = student.phone;
       inputAddress.value = student.address;
       inputPassword.value = student.password || '';
+      inputDept.value = student.department || 'General';
+      inputYear.value = student.year || '2026';
+      
+      // Load nested structures fields metrics values back into inputs
+      inputCourseId.value = student.course?.id || 'unassigned';
+      inputCourseTitle.value = student.course?.title || '';
+      inputCourseStatus.value = student.course?.status || 'Active';
+      inputClassDuration.value = student.class?.duration || 'N/A';
+      inputPayStatus.value = student.payment?.status || 'Incomplete';
+      inputPayBadge.value = student.payment?.badge || 'Note!';
+      inputPayAmount.value = student.payment?.amount !== undefined ? student.payment.amount : 0;
+      
+      inputLinkedin.value = student.linkedin || '';
+      inputGithub.value = student.github || '';
+      inputTwitter.value = student.twitter || '';
 
       // Set visible controls to editing state configuration modes
       formTitle.textContent = "Modify Student Record";
@@ -345,9 +490,18 @@
       submitBtn.textContent = "Save Student Record";
       submitBtn.disabled = false;
       cancelBtn.style.display = "none";
+      
+      // Reset explicit manual program fallbacks
+      inputCourseId.value = "unassigned";
+      inputCourseStatus.value = "Active";
+      inputPayStatus.value = "Incomplete";
+      inputPayBadge.value = "Note!";
+      inputPayAmount.value = "0";
+      inputClassDuration.value = "N/A";
+      inputDept.value = "General";
+      inputYear.value = "2026";
     }
 
-    // Sanitization filter helper configuration method
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");

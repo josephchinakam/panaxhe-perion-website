@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Setup | Panaxhé Périon Institute</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">  
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent">Périon</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="apply.html">Admissions</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+        </button>
+        <a href="login.html" class="btn btn-outline">Portal</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header text-center">
+    <div class="container" style="max-width: 800px;">
+      <h1 class="mb-4">Institute Control Panel</h1>
+      <p>Configure core identity metadata matrix profiles here.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="max-width: 700px;">
+      <div class="card">
+        <h3 class="mb-6" id="form-title">Loading Parameters...</h3>
+        
+        <form id="setup-form">
+          <div class="form-group">
+            <label class="form-label">Institute Name</label>
+            <input type="text" name="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Slogan Alpha</label>
+            <input type="text" name="slogan1" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Slogan Beta</label>
+            <input type="text" name="slogan" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Philosophy Matrix</label>
+            <textarea name="philosophy" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">About Context</label>
+            <textarea name="about" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Executive Summary</label>
+            <textarea name="summary" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mission Statement</label>
+            <textarea name="mission" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vision Projection</label>
+            <textarea name="vision" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Excellence Benchmark</label>
+            <textarea name="excellence" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Core Values</label>
+            <input type="text" name="corevalues" class="form-control" placeholder="e.g. Integrity, Innovation, Quality">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Email</label>
+            <input type="email" name="email" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Phone / WhatsApp</label>
+            <input type="text" name="phone" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Geographic Location</label>
+            <input type="text" name="location" class="form-control">
+          </div>
+          
+          <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Save Settings</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo mb-4">
+            <span>Panaxhé<span class="logo-accent">Périon</span></span>
+          </a>
+          <p>Advanced learning architectures built for future industry dynamics.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="courses.html">Courses</a>
+            <a href="apply.html">Admissions</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-links">
+            <a href="contact.html">Support Desk</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Panaxhé Périon Institute. All rights reserved.</p>
+        <p>Data Core Synchronized</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initTheme } from '../js/theme.js';
+    import { fetchBaseData, saveInstituteSetup } from '../js/api.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      initTheme();
+
+      const form = document.getElementById('setup-form');
+      const formTitle = document.getElementById('form-title');
+      let isUpdateMode = false;
+
+      // Try checking for existing data row
+      try {
+        const data = await fetchBaseData();
+        if (data && data.instituteData && data.instituteData.id) {
+          isUpdateMode = true;
+          formTitle.textContent = "Modify Identity Matrix Profile";
+          
+          // Hydrate fields cleanly
+          const fields = data.instituteData;
+          Object.keys(fields).forEach(key => {
+            const input = form.elements[key];
+            if (input) input.value = fields[key] || '';
+          });
+        } else {
+          formTitle.textContent = "Initialize Brand New Profile Space";
+        }
+      } catch (error) {
+        console.log("No data present yet. Ready to initialize profile.", error);
+        formTitle.textContent = "Initialize Brand New Profile Space";
+      }
+
+      // Handle configuration submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await saveInstituteSetup(payload);
+          if (response.state === 200) {
+            alert('Institute core matrix values updated successfully.');
+            window.location.reload();
+          } else {
+            alert('Failed to drop data payload down to context channels.');
+          }
+        } catch (error) {
+          console.error('Setup Engine Crash:', error);
+          alert('Network transaction dropped.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

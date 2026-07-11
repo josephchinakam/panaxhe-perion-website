@@ -1,4 +1,3 @@
-# Infor
+# version 2 now updated for the backend...
 
-- everythinis inside the public no libraies needed 
-- need to be hosted on cloudflare
+- cloudlflare dready

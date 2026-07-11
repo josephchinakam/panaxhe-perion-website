@@ -1,6 +1,6 @@
 // // api.js - Core Security Matrix API Request Router
 // const API_BASE_URL = '/api/admins'; // Replace with your actual server endpoint
-const BASE_URL = ''; 
+const BASE_URL = 'http://localhost:8787'; 
 
 async function handleResponse(response) {
   if (!response.ok) {
@@ -22,7 +22,7 @@ export async function fetchBaseData() {
 
 export async function fetchPartners() {
   try {
-    const response = await fetch('/api/partners'); // Replace with your actual endpoint URL
+    const response = await fetch(`${BASE_URL}/api/partners`); // Replace with your actual endpoint URL
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -380,3 +380,20 @@ export const StudentAPI = {
   }
 };
 
+/**
+ * Pushes the setup profile payload configuration to the Hono edge stack router.
+ */
+export async function saveInstituteSetup(instituteData) {
+  try {
+    const response = await fetch(`${BASE_URL}/api/institute/setup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(instituteData)
+    });
+    if (!response.ok) throw new Error('Identity creation transaction rejected.');
+    return await response.json();
+  } catch (error) {
+    console.error('API Fail Engine (saveInstituteSetup):', error);
+    throw error;
+  }
+}
