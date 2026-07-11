@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details | Panaxhé Périon Institute</title>
+  <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">  
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent">Périon</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="apply.html">Admissions</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+        </button>
+        <a href="login.html" class="btn btn-outline">Portal</a>
+        <a href="apply.html" class="btn btn-primary">Apply Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <a href="courses.html" class="btn btn-outline mb-6" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">&larr; Back to Courses</a>
+      <h1 id="course-header-title" class="mb-4">Course Details</h1>
+      <p id="course-header-desc" style="max-width: 800px; font-size: 1.125rem;"></p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" id="course-details-container">
+      <!-- Injected via JS -->
+    </div>
+  </section>
+
+  <!-- FAQ Section specifically for course page -->
+  <section class="section section-light">
+    <div class="container" style="max-width: 800px;">
+      <h2 class="text-center mb-12">Frequently Asked Questions</h2>
+      
+      <div class="accordion-item">
+        <div class="accordion-header">
+          Will I get a recognized certificate?
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+        <div class="accordion-content">
+          Yes, upon successful completion and portfolio defense, you will receive a verifiable industry-recognized certification from Panaxhé Périon Institute.
+        </div>
+      </div>
+      
+      <div class="accordion-item">
+        <div class="accordion-header">
+          Is financial aid available?
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+        <div class="accordion-content">
+          We offer limited merit-based scholarships for exceptional students. Contact admissions for more details.
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo mb-6">
+            <span>Panaxhé<span class="logo-accent">Périon</span></span>
+          </a>
+          <p style="font-size: 0.875rem;"  data-bind="mission">Empowering the next generation of African innovators through world-class technical education.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Institute</h4>
+          <div class="footer-links">
+            <a href="courses.html">Our Courses</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Admissions</h4>
+          <div class="footer-links">
+            <a href="apply.html">Apply Now</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <div class="footer-links">
+            <a href="contact.html">Contact Us</a>
+            <a href="login.html">Student Portal</a>
+            <a href="login.html">Staff Portal</a>
+
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 Panaxhé Périon Institute Courses. All rights reserved.</div>
+        <div class="flex gap-4">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+
+    import { initTheme } from '../js/theme.js';
+    import { fetchCourses, fetchBaseData, fetchCourseById } from '../js/api.js';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        initTheme(); 
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+              navbar.style.boxShadow = 'var(--shadow-md)';
+            } else {
+              navbar.style.boxShadow = 'none';
+            }
+          });
+        }
+
+
+
+        function injectDynamicData(instituteData, stats) {
+          const elements = document.querySelectorAll('[data-bind]');
+          elements.forEach(el => {
+            const key = el.getAttribute('data-bind');
+            if (instituteData && instituteData[key] !== undefined) {
+              el.textContent = instituteData[key];
+            } else if (stats && stats[key] !== undefined) {
+              el.textContent = stats[key].toLocaleString();
+            }
+          });
+        }
+
+
+        function renderCourseDetails(course, instituteData, container) {
+          document.title = `${course.title} | ${instituteData.name || 'Institute'}`;
+          
+          const header = document.getElementById('course-header-title');
+          if (header) header.textContent = course.title;
+          
+          const desc = document.getElementById('course-header-desc');
+          if (desc) desc.textContent = course.description;
+
+          container.innerHTML = `
+            <div class="content-grid">
+              <div class="main-content">
+                <h2>Why this career matters</h2>
+                <p class="mb-8">${course.future}</p>
+                
+                <h2>Skills you will gain</h2>
+                <div class="grid grid-2 mb-8">
+                  ${course.skills.map(skill => `
+                    <div class="card" style="padding: 1.5rem;">
+                      <h4 class="mb-0 text-primary">${skill}</h4>
+                    </div>
+                  `).join('')}
+                </div>
+                
+                <h2>Possible Job Titles</h2>
+                <ul class="mb-8" style="list-style-type: disc; padding-left: 1.5rem; color: var(--text-secondary);">
+                  ${course.roles.map(role => `<li class="mb-2">${role}</li>`).join('')}
+                </ul>
+                
+                <h2>Entry Requirements</h2>
+                <p class="mb-8">${course.requirements}</p>
+                
+                <div class="card" style="background-color: var(--bg-secondary); border: none;">
+                  <h3>Ready to build the future?</h3>
+                  <p class="mb-6">Join a community of innovators shaping Africa's destiny.</p>
+                  <a href="apply.html" class="btn btn-primary">Apply Now</a>
+                </div>
+              </div>
+              
+              <div class="sidebar">
+                <div class="sidebar-box">
+                  <h3 class="mb-6">Course Overview</h3>
+                  
+                  <div class="stat-item">
+                    <div class="stat-label">Duration</div>
+                    <div class="stat-value">${course.duration}</div>
+                  </div>
+                  
+                  <div class="stat-item">
+                    <div class="stat-label">Study Mode</div>
+                    <div class="stat-value">${course.mode}</div>
+                  </div>
+                  
+                  <div class="stat-item">
+                    <div class="stat-label">Next Intake</div>
+                    <div class="stat-value">${course.intake}</div>
+                  </div>
+                  
+                  <div class="stat-item">
+                    <div class="stat-label">Tuition Fee</div>
+                    <div class="stat-value">${course.fee}</div>
+                  </div>
+                  
+                  <div class="stat-item">
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value"><span class="badge badge-primary">${course.status}</span></div>
+                  </div>
+                  
+                  <a href="apply.html" class="btn btn-gold mt-8" style="width: 100%;">Apply for this Course</a>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        try{
+
+          const { instituteData, stats } = await fetchBaseData();
+            injectDynamicData(instituteData, stats);
+
+          const courseDetailsContainer = document.getElementById('course-details-container');
+          if (courseDetailsContainer) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('id');
+            
+            if (courseId) {
+              const course = await fetchCourseById(courseId);
+              console.log(course);
+              renderCourseDetails(course, instituteData, courseDetailsContainer);
+            } else {
+              // Fallback or default handling if no ID is specified
+              const courses = await fetchCourses();
+              if (courses.length > 0) {
+                renderCourseDetails(courses[0], instituteData, courseDetailsContainer);
+              }
+            }
+          }
+
+        }catch (error){
+          console.error('Application failed to load server data:', error);
+        }
+
+      });    
+    
+
+  </script>
+</body>
+</html>

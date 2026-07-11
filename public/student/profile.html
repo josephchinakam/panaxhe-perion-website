@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile</title>
+  <link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
+  <style>
+    .portal-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+    .portal-sidebar {
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .portal-main {
+      padding: 2rem 3rem;
+      background-color: var(--bg-color);
+    }
+    .portal-nav {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .portal-nav a {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .portal-nav a:hover, .portal-nav a.active {
+      background-color: rgba(120, 81, 169, 0.1);
+      color: var(--primary-color);
+    }
+    [data-theme="dark"] .portal-nav a:hover, [data-theme="dark"] .portal-nav a.active {
+      background-color: rgba(139, 92, 246, 0.2);
+    }
+    @media (max-width: 1024px) {
+      .portal-layout { grid-template-columns: 1fr; }
+      .portal-sidebar { display: none; }
+      .portal-main { padding: 2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent"> Périon</span></span>
+      </a>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <div class="flex items-center gap-4">
+        <span class="badge badge-primary">Student Profile</span>
+        <span id="status-badge" class="badge badge-gold">Active Status</span>
+      </div>
+      <!-- Added dynamic id to title -->
+      <h1 id="header-display-name" class="mt-4 mb-2">Loading...</h1>
+      <!-- Added dynamic id to subtext ID element -->
+      <p class="mb-1">Student ID: <span id="header-student-id" class="text-primary" style="font-weight: 600;">...</span></p>
+    </div>
+  </header>
+
+  <main class="section section-light">
+    <div class="container">
+      <div class="content-grid">
+        
+        <div class="flex" style="flex-direction: column; gap: 2rem;">
+          
+          <div class="card">
+            <h3 class="mb-6">Contact & Personal Details</h3>
+            
+            <div class="grid grid-2">
+              <div class="stat-item">
+                <div class="stat-label">Full Name</div>
+                <div id="profile-full-name" class="stat-value">Loading...</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Phone Number</div>
+                <div id="profile-phone" class="stat-value">Loading...</div>
+              </div>
+              <div class="stat-item" style="grid-column: span 2;">
+                <div class="stat-label">Permanent Address</div>
+                <div id="profile-address" class="stat-value">Loading...</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="mb-6">Academic Program</h3>
+            <div class="grid grid-3">
+              <div class="stat-item">
+                <div class="stat-label">Department</div>
+                <div id="profile-department" class="stat-value">Loading...</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Course</div>
+                <div id="profile-degree" class="stat-value">Loading...</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Year</div>
+                <div id="profile-year" class="stat-value">Loading...</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <aside>
+          <div class="sidebar-box">
+            <h4 class="mb-4">Connect & Links</h4>
+            
+            <div class="footer-links" style="gap: 1.25rem;">
+              <a id="profile-email" href="#" class="flex items-center gap-2">
+                <span class="text-primary">✉</span> Loading...
+              </a>
+              <a id="profile-linkedin" href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2">
+                <span class="text-primary">💼</span> LinkedIn Profile
+              </a>
+              <a id="profile-github" href="https://github.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2">
+                <span class="text-primary">💻</span> GitHub Portfolio
+              </a>
+              <a id="profile-twitter" href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2">
+                <span class="text-primary">🐦</span> X / Twitter
+              </a>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+
+<!--             <h4 class="mb-4">Quick Stats</h4>
+            <div class="stat-item">
+              <div class="stat-label">Cumulative GPA</div>
+              <div id="profile-gpa" class="stat-value text-gold" style="font-size: 1.5rem;">0.00 / 4.00</div>
+            </div> -->
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Panaxhé Périon Institute Courses. All student data securely managed.</p>
+        <div class="flex gap-4">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Support</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Base UI Interactive Script -->
+  <script>
+    const themeToggleBtn = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlElement.setAttribute('data-theme', newTheme);
+    });
+  </script>
+
+
+    <script type="module">
+      import { initTheme } from '../js/theme.js';
+      import { fetchBaseData, fetchDashboardDataStudent} from '../js/api.js';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        //initTheme(); 
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentId = urlParams.get('id'); 
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+              navbar.style.boxShadow = 'var(--shadow-md)';
+            } else {
+              navbar.style.boxShadow = 'none';
+            }
+          });
+        }
+
+        function updateProfileDOM(data) {
+          // 1. Header elements
+          document.getElementById('header-display-name').textContent = data.name || 'N/A';
+          document.getElementById('header-student-id').textContent = data.id || '#STU-0000-0000';
+          
+          // Update status badge if necessary
+          const statusBadge = document.getElementById('status-badge');
+          if (statusBadge && data.course.status) {
+            statusBadge.textContent = `${data.course.status} Status`;
+          }
+
+          // 2. Personal & Contact Details Card
+          document.getElementById('profile-full-name').textContent = data.name || 'N/A';
+          document.getElementById('profile-phone').textContent = data.phone || 'N/A';
+          document.getElementById('profile-address').textContent = data.address || 'N/A';
+
+          // 3. Academic Program Card
+          document.getElementById('profile-department').textContent = data.department || 'N/A';
+          document.getElementById('profile-degree').textContent = data.course.title || 'N/A';
+          document.getElementById('profile-year').textContent = data.year || 'N/A';
+
+          // 4. Sidebar Links & Quick Stats
+          const emailLink = document.getElementById('profile-email');
+          if (emailLink && data.email) {
+            emailLink.href = `mailto:${data.email}`;
+            emailLink.innerHTML = `<span class="text-primary">✉</span> ${data.email}`;
+          }
+
+          const linkedinLink = document.getElementById('profile-linkedin');
+          if (linkedinLink) linkedinLink.href = data.linkedinUrl || 'https://linkedin.com';
+
+          const githubLink = document.getElementById('profile-github');
+          if (githubLink) githubLink.href = data.githubUrl || 'https://github.com';
+
+          const twitterLink = document.getElementById('profile-twitter');
+          if (twitterLink) twitterLink.href = data.twitterUrl || 'https://twitter.com';
+
+        }
+
+
+        try{
+
+          const data = await fetchDashboardDataStudent(studentId);
+          updateProfileDOM(data);
+
+
+        } catch (error){
+            console.error('Application failed to load server data:', error);
+        }  
+
+      });
+
+
+  </script>
+</body>
+</html>

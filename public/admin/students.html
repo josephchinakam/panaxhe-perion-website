@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Manage Students</title>
+  <link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
+  <style>
+    /* Admin Specific Overrides & Layout Utilities */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 1024px) {
+      .admin-grid {
+        grid-template-columns: 350px 1fr;
+      }
+    }
+    
+    /* Table Styling built on CSS variables */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-family: var(--font-sans);
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .admin-table th {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .admin-table td {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* Utility Action Utility Classes */
+    .actions-cell {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+    .btn-danger:hover {
+      background-color: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    /* Form Customization */
+    .sticky-form {
+      position: sticky;
+      top: calc(var(--nav-height) + 2rem);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent"> Périon</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#" class="text-primary">Manage Students</a>
+        <a href="courses.html">Courses</a>
+        <a href="admins.html">Settings</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <div class="flex items-center gap-4">
+        <span class="badge badge-primary">Control Center</span>
+        <span class="badge badge-gold" id="student-count">Total Students: Loading...</span>
+      </div>
+      <h1 class="mt-4 mb-2">Student Directory Database</h1>
+      <p class="mb-1">Create, view, update, and remove student profiles and authorization credentials.</p>
+    </div>
+  </header>
+
+  <main class="section section-light">
+    <div class="container">
+      <div class="admin-grid">
+        
+        <!-- Input Form Panel Component -->
+        <aside>
+          <div class="card sticky-form">
+            <h3 id="form-title" class="mb-6">Register New Student</h3>
+            <form id="student-form">
+              <!-- Contextual Tracking State Flag -->
+              <input type="hidden" id="is-edit-mode" value="false">
+
+              <div class="form-group">
+                <label class="form-label" for="stu-id">Student ID Number</label>
+                <input type="text" id="stu-id" class="form-control" placeholder="ds-01" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-name">Full Name</label>
+                <input type="text" id="stu-name" class="form-control" placeholder="Jane Doe" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-email">Email Address</label>
+                <input type="email" id="stu-email" class="form-control" placeholder="janedoe@gmail.com" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-phone">Phone Number</label>
+                <input type="tel" id="stu-phone" class="form-control" placeholder="+263 77 123 4567" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-address">Permanent Address</label>
+                <input type="text" id="stu-address" class="form-control" placeholder="Street, City, State" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="stu-password">Account Password</label>
+                <input type="password" id="stu-password" class="form-control" placeholder="••••••••" required>
+              </div>
+
+              <div class="flex gap-2 mt-8">
+                <button type="submit" id="submit-btn" class="btn btn-primary" style="flex: 1;">Save Student Record</button>
+                <button type="button" id="cancel-btn" class="btn btn-outline" style="display: none;">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </aside>
+
+        <!-- Main Real-Time Catalog Output Render Target Panel -->
+        <section>
+          <div class="table-container">
+            <table class="admin-table" id="data-table">
+              <thead>
+                <tr>
+                  <th>Student Info</th>
+                  <th>ID Number</th>
+                  <th>Contact Details</th>
+                  <th>Address</th>
+                  <th style="width: 150px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="student-table-body">
+                <!-- Records drawn asynchronously via runtime API interface methods -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Panaxhé Périon Institute Courses Administration Engine.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // import { initTheme } from '../js/theme.js';
+    import { StudentAPI } from '../js/api.js';
+
+    /* --- Theme Toggle Engine --- */
+    const themeToggleBtn = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlElement.setAttribute('data-theme', newTheme);
+    });
+
+    /* --- Live Data Core Architecture Control Controller Script --- */
+    let studentsInMemory = [];
+
+    // Form Interface Structural View References Mapping Objects
+    const form = document.getElementById('student-form');
+    const tableBody = document.getElementById('student-table-body');
+    const studentCountBadge = document.getElementById('student-count');
+    const formTitle = document.getElementById('form-title');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    
+    const isEditMode = document.getElementById('is-edit-mode');
+    const inputId = document.getElementById('stu-id');
+    const inputName = document.getElementById('stu-name');
+    const inputEmail = document.getElementById('stu-email');
+    const inputPhone = document.getElementById('stu-phone');
+    const inputAddress = document.getElementById('stu-address');
+    const inputPassword = document.getElementById('stu-password');
+
+    // Retrieve live record maps directly via internal API routing pipeline loops
+    async function syncStudentDirectory() {
+      try {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 3rem; color: var(--text-secondary);">Querying cloud database directory records...</td></tr>`;
+        studentsInMemory = await StudentAPI.getAll();
+        renderTable(studentsInMemory);
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 4rem; color: #ef4444;">System Error: Failed to retrieve data from Core Network link.</td></tr>`;
+      }
+    }
+
+    // Process array rendering loops dynamically using safe escaping transformations
+    function renderTable(dataArray) {
+      tableBody.innerHTML = '';
+      studentCountBadge.textContent = `Total Students: ${dataArray.length}`;
+
+      if (dataArray.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 3rem; color: var(--text-tertiary);">No student records found in database.</td></tr>`;
+        return;
+      }
+
+      dataArray.forEach((student) => {
+        const row = document.createElement('tr');
+        const uniqueId = student.id;
+        
+        row.innerHTML = `
+          <td>
+            <strong>${escapeHtml(student.name)}</strong><br>
+            <small style="color: var(--text-tertiary);">${escapeHtml(student.email)}</small>
+          </td>
+          <td><span class="text-primary" style="font-weight:600;">${escapeHtml(student.id)}</span></td>
+          <td>${escapeHtml(student.phone)}</td>
+          <td><span style="font-size:0.85rem;">${escapeHtml(student.address)}</span></td>
+          <td>
+            <div class="actions-cell">
+              <button class="btn btn-outline btn-sm" onclick="editStudent('${uniqueId}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteStudent('${uniqueId}')">Delete</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Process form creation payload submissions natively over HTTP streams 
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const studentData = {
+        id: inputId.value,
+        name: inputName.value,
+        email: inputEmail.value,
+        phone: inputPhone.value,
+        address: inputAddress.value,
+        password: inputPassword.value
+      };
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Writing Identity Mapping Matrix...";
+
+        if (isEditMode.value === "false") {
+          await StudentAPI.create(studentData);
+        } else {
+          await StudentAPI.update(studentData.id, studentData);
+        }
+
+        resetForm();
+        await syncStudentDirectory();
+      } catch (error) {
+        alert("Transaction Aborted: Operation processing failed.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = isEditMode.value === "false" ? "Save Student Record" : "Update Records";
+      }
+    });
+
+    // Load active memory attributes data directly down into input references
+    window.editStudent = function(id) {
+      const student = studentsInMemory.find(s => s.id === id);
+      if (!student) return;
+
+      isEditMode.value = "true";
+      inputId.value = student.id;
+      inputId.disabled = true; // Block manual key primary modifications on updates
+      inputName.value = student.name;
+      inputEmail.value = student.email || '';
+      inputPhone.value = student.phone;
+      inputAddress.value = student.address;
+      inputPassword.value = student.password || '';
+
+      // Set visible controls to editing state configuration modes
+      formTitle.textContent = "Modify Student Record";
+      submitBtn.textContent = "Update Records";
+      cancelBtn.style.display = "inline-flex";
+    };
+
+    // Execute direct target database deletion processes securely
+    window.deleteStudent = async function(id) {
+      const student = studentsInMemory.find(s => s.id === id);
+      if (!student) return;
+
+      if (confirm(`Are you sure you want to completely erase data for ${student.name}?`)) {
+        try {
+          await StudentAPI.delete(id);
+          resetForm();
+          await syncStudentDirectory();
+        } catch (error) {
+          alert("Purge failed: Access permissions invalid on network.");
+        }
+      }
+    };
+
+    cancelBtn.addEventListener('click', resetForm);
+
+    function resetForm() {
+      form.reset();
+      isEditMode.value = "false";
+      inputId.disabled = false;
+      formTitle.textContent = "Register New Student";
+      submitBtn.textContent = "Save Student Record";
+      submitBtn.disabled = false;
+      cancelBtn.style.display = "none";
+    }
+
+    // Sanitization filter helper configuration method
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Base Initialization execution startup calls
+    syncStudentDirectory();
+  </script>
+</body>
+</html>

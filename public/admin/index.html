@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Panaxhé Périon</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">  
+  <style>
+    .portal-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+    .portal-sidebar {
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .portal-main {
+      padding: 2rem 3rem;
+      background-color: var(--bg-color);
+    }
+    .portal-nav {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .portal-nav a {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .portal-nav a:hover, .portal-nav a.active {
+      background-color: rgba(212, 175, 55, 0.1); /* Gold tint for admin */
+      color: var(--gold-color);
+    }
+    [data-theme="dark"] .portal-nav a:hover, [data-theme="dark"] .portal-nav a.active {
+      background-color: rgba(252, 211, 77, 0.2);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .admin-table th {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    
+    /* Config Panel Custom Layout */
+    .dashboard-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .form-control {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    .partner-logo-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+      object-fit: cover;
+      display: inline-block;
+    }
+    .flex-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .portal-layout { grid-template-columns: 1fr; }
+      .portal-sidebar { display: none; }
+      .portal-main { padding: 2rem 1rem; }
+      .dashboard-sections { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="portal-layout">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <a href="../index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent">Périon</span></span>
+      </a>
+      <div class="badge badge-gold mt-2" style="align-self: flex-start;">Admin Panel</div>
+      
+      <nav class="portal-nav flex-1">
+        <a href="#" class="active">Dashboard</a>
+        <a href="admins.html">Admins</a>
+        <a href="courses.html">Courses</a>
+        <a href="students.html">Students</a>
+        <a href="#">Applications</a>
+        <a href="#">Analytics</a>
+      </nav>
+      
+      <div style="margin-top: auto;">
+        <button id="theme-toggle" class="theme-toggle mb-4" aria-label="Toggle theme">
+          <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+        </button>
+        <a href="../login.html" class="portal-nav a text-secondary" style="padding: 0;">Logout</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header class="flex justify-between items-center mb-12">
+        <div>
+          <h2 class="mb-1">Institute Overview</h2>
+          <p class="text-secondary">System Administration Dashboard</p>
+        </div>
+        <a href="#" class="btn btn-gold">Publish Announcement</a>
+      </header>
+      
+      <!-- Metrics Row -->
+      <div class="grid grid-4 mb-8">
+        <div class="card" style="padding: 1.5rem;">
+          <p class="text-secondary mb-2" style="font-size: 0.875rem;">Total Visitors</p>
+          <h3 class="mb-0" data-bind="totalVisitors">...</h3>
+          <p style="font-size: 0.75rem; color: #10B981; margin-top: 0.5rem;">+this week</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+          <p class="text-secondary mb-2" style="font-size: 0.875rem;">Today's Visitors</p>
+          <h3 class="mb-0" data-bind="todayVisitors">...</h3>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+          <p class="text-secondary mb-2" style="font-size: 0.875rem;">Total Students</p>
+          <h3 class="mb-0" data-bind="totalStudents">...</h3>
+        </div>
+        <div class="card" style="padding: 1.5rem; border-color: var(--gold-color);">
+          <p class="text-secondary mb-2" style="font-size: 0.875rem;">Course Slots</p>
+          <h3 class="mb-0"><span data-bind="publishedCoursesCount">...</span> / <span data-bind="maxCourseSlots">...</span></h3>
+          <p style="font-size: 0.75rem; color: var(--gold-color); margin-top: 0.5rem;" id="slots-remaining-text">Calculating...</p>
+        </div>
+      </div>
+
+      <!-- Application Info & Partners Sub-interfaces -->
+      <div class="dashboard-sections">
+        
+        <!-- Application Info Manager -->
+        <section class="card" style="padding: 2rem;">
+          <h3 class="mb-4">Application Parameters</h3>
+          <form id="app-info-form">
+            <div class="form-group">
+              <label for="app-deadline">Deadline Date</label>
+              <input type="text" id="app-deadline" class="form-control" placeholder="e.g. August 15, 2026">
+            </div>
+            <div class="form-group">
+              <label for="app-fee">Application Fee</label>
+              <input type="text" id="app-fee" class="form-control" placeholder="e.g. $20 USD">
+            </div>
+            <div class="form-group">
+              <label for="app-bank">Bank Name</label>
+              <input type="text" id="app-bank" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="app-acc-name">Account Name</label>
+              <input type="text" id="app-acc-name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="app-acc-no">Account Number</label>
+              <input type="text" id="app-acc-no" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="app-ecocash">EcoCash Merchant / Number</label>
+              <input type="text" id="app-ecocash" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="app-help">Helpdesk Contact Line</label>
+              <input type="text" id="app-help" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-gold mt-4" style="width: 100%;">Save Operational Details</button>
+          </form>
+        </section>
+
+        <!-- Partners Management System -->
+        <section class="card" style="padding: 2rem;">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="mb-0">Corporate Affiliates</h3>
+            <button id="btn-toggle-partner-form" class="btn btn-gold" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Add Partner</button>
+          </div>
+
+          <!-- Inline dynamic form block for Partner Creation/Editing -->
+          <div id="partner-form-wrapper" style="display: none; background: rgba(0,0,0,0.02); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px dashed var(--border-color);">
+            <h4 id="partner-form-title" class="mb-2">New Corporate Profile</h4>
+            <form id="partner-form">
+              <input type="hidden" id="partner-id">
+              <div class="form-group">
+                <label for="partner-name">Partner Legal Name</label>
+                <input type="text" id="partner-name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="partner-logo">Logo Resource URL</label>
+                <input type="url" id="partner-logo" class="form-control" placeholder="https://example.com/logo.png">
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button type="submit" class="btn btn-gold" style="flex: 1;">Commit Record</button>
+                <button type="button" id="btn-cancel-partner" class="btn text-secondary" style="background: transparent;">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Live partners table container -->
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Name</th>
+                <th style="text-align: right;">Controls</th>
+              </tr>
+            </thead>
+            <tbody id="partners-table-body">
+              <tr>
+                <td colspan="3" class="text-secondary">Syncing active logs...</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initTheme } from '../js/theme.js';
+    import { fetchBaseData, AdminAPI } from '../js/api.js'; // Assuming AdminAPI is exported from api.js
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      initTheme();
+      
+      // Global dashboard state handles
+      let currentApplicationInfo = {};
+      let livePartnersList = [];
+
+      try {
+        // Fetch centralized base system resource metrics
+        const { instituteData, stats } = await fetchBaseData();
+        const statsData = stats;
+
+        // Inject metric items directly into data-bound placeholders
+        const elements = document.querySelectorAll('[data-bind]');
+        elements.forEach(el => {
+          const key = el.getAttribute('data-bind');
+          if (instituteData[key] !== undefined) {
+            el.textContent = instituteData[key];
+          } else if (statsData[key] !== undefined) {
+            el.textContent = typeof statsData[key] === 'number' 
+              ? statsData[key].toLocaleString() 
+              : statsData[key];
+          }
+        });
+
+        // Calculate active course capacity thresholds
+        const published = parseInt(instituteData.publishedCoursesCount, 10);
+        const maxSlots = parseInt(instituteData.maxCourseSlots, 10);
+        const remaining = maxSlots - published;
+        document.getElementById('slots-remaining-text').textContent = `${remaining > 0 ? remaining : 0} remaining`;
+
+      } catch (error) {
+        console.error('Metrics Integration Error:', error);
+      }
+
+      /* ==========================================================================
+         APPLICATION INFO CONTROLLER INTERACTION LAYER
+         ========================================================================== */
+      async function loadApplicationInfo() {
+        try {
+          currentApplicationInfo = await AdminAPI.getApplicationInfo();
+          
+          document.getElementById('app-deadline').value = currentApplicationInfo.deadline || '';
+          document.getElementById('app-fee').value = currentApplicationInfo.fee || '';
+          document.getElementById('app-bank').value = currentApplicationInfo.bankname || '';
+          document.getElementById('app-acc-name').value = currentApplicationInfo.acc_name || '';
+          document.getElementById('app-acc-no').value = currentApplicationInfo.acc_no || '';
+          document.getElementById('app-ecocash').value = currentApplicationInfo.ecocash || '';
+          document.getElementById('app-help').value = currentApplicationInfo.help || '';
+        } catch (err) {
+          console.error('Could not fetch institutional profile:', err);
+        }
+      }
+
+      document.getElementById('app-info-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          deadline: document.getElementById('app-deadline').value,
+          fee: document.getElementById('app-fee').value,
+          bankname: document.getElementById('app-bank').value,
+          acc_name: document.getElementById('app-acc-name').value,
+          acc_no: document.getElementById('app-acc-no').value,
+          ecocash: document.getElementById('app-ecocash').value,
+          help: document.getElementById('app-help').value
+        };
+
+        try {
+          await AdminAPI.updateApplicationInfo(payload);
+          alert('System parameters successfully synchronized.');
+        } catch (err) {
+          alert('Failed to update system options.');
+        }
+      });
+
+      /* ==========================================================================
+         PARTNERS ARCHITECTURE CRUD INTERACTION LAYER
+         ========================================================================== */
+      const partnerFormWrapper = document.getElementById('partner-form-wrapper');
+      const partnerForm = document.getElementById('partner-form');
+      const partnerFormTitle = document.getElementById('partner-form-title');
+      const partnersTableBody = document.getElementById('partners-table-body');
+
+      async function syncPartnersUI() {
+        try {
+          livePartnersList = await AdminAPI.getAllPartners();
+          renderPartnersTable();
+        } catch (err) {
+          partnersTableBody.innerHTML = `<tr><td colspan="3" style="color: red;">Error displaying external partner list.</td></tr>`;
+        }
+      }
+
+      function renderPartnersTable() {
+        if (livePartnersList.length === 0) {
+          partnersTableBody.innerHTML = `<tr><td colspan="3" class="text-secondary">No corporate partners bound to profile.</td></tr>`;
+          return;
+        }
+
+        partnersTableBody.innerHTML = livePartnersList.map(partner => `
+          <tr>
+            <td>
+              <img src="${partner.logoUrl || 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23ccc\'><circle cx=\'12\' cy=\'12\' r=\'10\'/></svg>'}" 
+                   alt="${partner.name}" class="partner-logo-preview">
+            </td>
+            <td><strong>${partner.name}</strong><br><small class="text-secondary">${partner.id}</small></td>
+            <td style="text-align: right;">
+              <div class="flex-actions justify-end">
+                <button class="btn btn-edit-partner" data-id="${partner.id}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: var(--border-color);">Edit</button>
+                <button class="btn btn-delete-partner" data-id="${partner.id}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: #EF4444; color: white;">Drop</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+
+        // Wire event triggers safely inside dynamic loop structure
+        document.querySelectorAll('.btn-edit-partner').forEach(btn => {
+          btn.addEventListener('click', () => initiatePartnerEdit(btn.getAttribute('data-id')));
+        });
+        document.querySelectorAll('.btn-delete-partner').forEach(btn => {
+          btn.addEventListener('click', () => triggerPartnerRemoval(btn.getAttribute('data-id')));
+        });
+      }
+
+      function resetPartnerForm() {
+        partnerForm.reset();
+        document.getElementById('partner-id').value = '';
+        partnerFormWrapper.style.display = 'none';
+        partnerFormTitle.textContent = 'New Corporate Profile';
+      }
+
+      function initiatePartnerEdit(id) {
+        const item = livePartnersList.find(p => p.id === id);
+        if (!item) return;
+
+        document.getElementById('partner-id').value = item.id;
+        document.getElementById('partner-name').value = item.name;
+        document.getElementById('partner-logo').value = item.logoUrl || '';
+
+        partnerFormTitle.textContent = 'Modify Partner Details';
+        partnerFormWrapper.style.display = 'block';
+        partnerFormWrapper.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      async function triggerPartnerRemoval(id) {
+        if (!confirm('Are you certain you wish to disassociate this partner item permanently?')) return;
+        try {
+          await AdminAPI.deletePartner(id);
+          await syncPartnersUI();
+        } catch (err) {
+          alert('Could not execute partner deletion.');
+        }
+      }
+
+      // Event Listeners for UI interaction hooks
+      document.getElementById('btn-toggle-partner-form').addEventListener('click', () => {
+        resetPartnerForm();
+        partnerFormWrapper.style.display = partnerFormWrapper.style.display === 'none' ? 'block' : 'none';
+      });
+
+      document.getElementById('btn-cancel-partner').addEventListener('click', resetPartnerForm);
+
+      partnerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('partner-id').value;
+        const payload = {
+          name: document.getElementById('partner-name').value,
+          logoUrl: document.getElementById('partner-logo').value
+        };
+
+        try {
+          if (id) {
+            await AdminAPI.updatePartner(id, payload);
+          } else {
+            await AdminAPI.createPartner(payload);
+          }
+          resetPartnerForm();
+          await syncPartnersUI();
+        } catch (err) {
+          alert('Could not upload corporate configuration variables.');
+        }
+      });
+
+      // Initial runtime triggers
+      await loadApplicationInfo();
+      await syncPartnersUI();
+    });
+  </script>
+</body>
+</html>

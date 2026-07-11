@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Manage Admins</title>
+  <link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
+
+  <style>
+    /* Admin Matrix Layout Grid */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 1024px) {
+      .admin-grid {
+        grid-template-columns: 350px 1fr;
+      }
+    }
+    
+    /* Table Styling Architecture */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-family: var(--font-sans);
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .admin-table th {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .admin-table td {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* UI Control Elements */
+    .actions-cell {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+    .btn-danger:hover {
+      background-color: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    /* Form Configurations */
+    .sticky-form {
+      position: sticky;
+      top: calc(var(--nav-height) + 2rem);
+    }
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1em;
+      padding-right: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <span>Panaxhé<span class="logo-accent"> Périon</span></span> <span style="font-size: 0.9rem; font-family: var(--font-sans); font-weight: 400; margin-left: 0.5rem;" class="badge badge-gold">Master Panel</span>
+      </div>
+      <div class="nav-links">
+        <a href="students.html">Manage Students</a>
+        <a href="#" class="text-primary">Manage Admins</a>
+        <a href="#">Security Log</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <div class="flex items-center gap-4">
+        <span class="badge badge-primary">System Access Hierarchy</span>
+        <span class="badge badge-gold" id="admin-count">Total Operators: Loading...</span>
+      </div>
+      <h1 class="mt-4 mb-2">Administrative Staff Registry</h1>
+      <p class="mb-1">Provision global personnel accounts, assign scope authorizations, and alter master passphrases.</p>
+    </div>
+  </header>
+
+  <!-- Main System Workspace -->
+  <main class="section section-light">
+    <div class="container">
+      <div class="admin-grid">
+        
+        <!-- Left Column: Administrator Provisioning Form -->
+        <aside>
+          <div class="card sticky-form">
+            <h3 id="form-title" class="mb-6">Provision Admin Account</h3>
+            <form id="admin-form">
+              <!-- Identity Tracking Field (Now maps to Database ID instead of Array Index) -->
+              <input type="hidden" id="admin-id" value="">
+
+              <div class="form-group">
+                <label class="form-label" for="adm-name">Account Owner Name</label>
+                <input type="text" id="adm-name" class="form-control" placeholder="Director Vance" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="adm-email">Corporate Email Address</label>
+                <input type="email" id="adm-email" class="form-control" placeholder="vance@eduportal.com" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="adm-role">Access Authorization Level</label>
+                <select id="adm-role" class="form-control" required>
+                  <option value="" disabled selected>Select clearable scope...</option>
+                  <option value="Super Admin">Super Admin (Full Access)</option>
+                  <option value="Manager">Manager (Read/Write)</option>
+                  <option value="Editor">Editor (Read Only Records)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <div class="flex justify-between items-center mb-2">
+                  <label class="form-label" style="margin-bottom: 0;" for="adm-password">Access Password</label>
+                  <a href="#" id="gen-password-link" style="font-size: 0.8rem; font-weight: 500;" class="text-primary">Generate Strong Key</a>
+                </div>
+                <input type="password" id="adm-password" class="form-control" placeholder="••••••••" required>
+              </div>
+
+              <div class="flex gap-2 mt-8">
+                <button type="submit" id="submit-btn" class="btn btn-gold" style="flex: 1; color:#111827;">Authorize Operator</button>
+                <button type="button" id="cancel-btn" class="btn btn-outline" style="display: none;">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </aside>
+
+        <!-- Right Column: Interactive Admin Console Grid -->
+        <section>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Identity Label</th>
+                  <th>Secure Communication Email</th>
+                  <th>Permission Group</th>
+                  <th style="width: 150px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body">
+                <!-- Data injection point via scripting engine -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Panaxhé Périon Institute Courses Framework.</p>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script type="module">
+    // import { initTheme } from '../js/theme.js';
+    import { AdminAPI } from '../js/api.js';
+    /* --- Visual Interface Mode Toggle --- */
+    const themeToggleBtn = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlElement.setAttribute('data-theme', newTheme);
+    });
+
+    /* --- Authorization Data Management Engine --- */
+    let adminsInMemory = []; // Centralized run-time state tracking cache
+
+    // DOM Document Elements Linkage
+    const form = document.getElementById('admin-form');
+    const tableBody = document.getElementById('admin-table-body');
+    const adminCountBadge = document.getElementById('admin-count');
+    const formTitle = document.getElementById('form-title');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const genPasswordLink = document.getElementById('gen-password-link');
+    
+    const inputId = document.getElementById('admin-id');
+    const inputName = document.getElementById('adm-name');
+    const inputEmail = document.getElementById('adm-email');
+    const inputRole = document.getElementById('adm-role');
+    const inputPassword = document.getElementById('adm-password');
+
+    // Fetch and Sync with Core API Registry
+    async function loadAdmins() {
+      try {
+        tableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="padding: 2rem; color: var(--text-secondary);">Querying access matrix...</td></tr>`;
+        adminsInMemory = await AdminAPI.getAll();
+        renderTable(adminsInMemory);
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="padding: 3rem; color: #ef4444;">Critical Security Error: Unable to sync with API.</td></tr>`;
+      }
+    }
+
+    // Display Table Dataset Matrix
+    function renderTable(dataStream) {
+      tableBody.innerHTML = '';
+      adminCountBadge.textContent = `Total Operators: ${dataStream.length}`;
+
+      if (dataStream.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4" class="text-center" style="padding: 3rem; color: var(--text-tertiary);">No active management data detected. System locked.</td></tr>`;
+        return;
+      }
+
+      dataStream.forEach((admin) => {
+        const row = document.createElement('tr');
+        
+        // Handle database keys (fallback on _id if using MongoDB/NoSQL format, otherwise id)
+        const recordId = admin._id || admin.id;
+        
+        let badgeClass = 'badge-primary';
+        if (admin.role === 'Super Admin') badgeClass = 'badge-gold';
+        
+        // Safely pass String keys into the globally accessible window handlers below
+        row.innerHTML = `
+          <td><strong>${escapeHtml(admin.name)}</strong></td>
+          <td>${escapeHtml(admin.email)}</td>
+          <td><span class="badge ${badgeClass}">${escapeHtml(admin.role)}</span></td>
+          <td>
+            <div class="actions-cell">
+              <button class="btn btn-outline btn-sm" onclick="editAdmin('${recordId}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteAdmin('${recordId}')">Delete</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Capture dataset form submittals (Create or Update dynamically via Fetch)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const adminData = {
+        name: inputName.value,
+        email: inputEmail.value,
+        role: inputRole.value,
+        password: inputPassword.value
+      };
+
+      const targetId = inputId.value;
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing Sync...";
+
+        if (targetId === "") {
+          await AdminAPI.create(adminData);
+        } else {
+          await AdminAPI.update(targetId, adminData);
+        }
+
+        resetForm();
+        await loadAdmins(); // Refresh data smoothly
+      } catch (error) {
+        alert("Operation failed. Ensure configuration requirements are met.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = targetId === "" ? "Authorize Operator" : "Save Changes";
+      }
+    });
+
+    // Populate data inputs for updating
+    window.editAdmin = function(id) {
+      const target = adminsInMemory.find(adm => (adm._id || adm.id) === id);
+      if (!target) return;
+
+      inputId.value = id;
+      inputName.value = target.name;
+      inputEmail.value = target.email;
+      inputRole.value = target.role;
+      inputPassword.value = target.password || ""; // Fallback if API security strips payload password blocks
+
+      formTitle.textContent = "Modify Personnel Credentials";
+      submitBtn.textContent = "Save Changes";
+      cancelBtn.style.display = "inline-flex";
+    };
+
+    // Erase administrator scope identity
+    window.deleteAdmin = async function(id) {
+      const target = adminsInMemory.find(adm => (adm._id || adm.id) === id);
+      if (!target) return;
+
+      if (confirm(`Revoke completely all clearance permissions for ${target.name}?`)) {
+        try {
+          await AdminAPI.delete(id);
+          resetForm();
+          await loadAdmins();
+        } catch (error) {
+          alert("Could not complete access removal task.");
+        }
+      }
+    };
+
+    // Utility: Automatically populate secure token passwords
+    genPasswordLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~";
+      let generatedPass = "";
+      for (let i = 0; i < 14; i++) {
+        generatedPass += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      inputPassword.value = generatedPass;
+      inputPassword.type = "text";
+      setTimeout(() => { inputPassword.type = "password"; }, 5000); // Mask after 5 seconds automatically
+    });
+
+    cancelBtn.addEventListener('click', resetForm);
+
+    function resetForm() {
+      form.reset();
+      inputId.value = "";
+      formTitle.textContent = "Provision Admin Account";
+      submitBtn.textContent = "Authorize Operator";
+      submitBtn.disabled = false;
+      cancelBtn.style.display = "none";
+      inputPassword.type = "password";
+    }
+
+    // Content parser HTML escaping sanitization
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Initialize Connection Matrix on Mount
+    loadAdmins();
+  </script>
+</body>
+</html>

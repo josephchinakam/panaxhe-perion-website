@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Panaxhé Périon Institute</title>
+  <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">  
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent">Périon</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="apply.html">Admissions</a>
+        <a href="contact.html" style="color: var(--primary-color);">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+        </button>
+        <a href="login.html" class="btn btn-outline">Portal</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header text-center">
+    <div class="container" style="max-width: 800px;">
+      <h1 class="mb-4">Get in Touch</h1>
+      <p>Whether you're a prospective student or a future industry partner, we want to hear from you.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2">
+        <div>
+          <div class="card mb-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="card-icon" style="margin-bottom: 0;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              </div>
+              <div>
+                <h4 class="mb-1">Office Location</h4>
+                <!-- Will be dynamically populated by contact-api.js -->
+                <p class="mb-0 text-secondary" style="font-size: 0.875rem;" data-bind="location">Loading location...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card mb-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="card-icon" style="margin-bottom: 0;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              </div>
+              <div>
+                <h4 class="mb-1">Email Us</h4>
+                <!-- Will be dynamically populated by contact-api.js -->
+                <p class="mb-0 text-secondary" style="font-size: 0.875rem;" data-bind="email">Loading email address...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="card-icon" style="margin-bottom: 0;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+              </div>
+              <div>
+                <h4 class="mb-1">Call / WhatsApp</h4>
+                <!-- Will be dynamically populated by contact-api.js -->
+                <p class="mb-0 text-secondary" style="font-size: 0.875rem;" data-bind="phone">Loading phone options...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h3 class="mb-6">Send a Message</h3>
+          <!-- Updated form to use a unique ID and removed old inline onsubmit -->
+          <form id="contact-form">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <!-- Added name property -->
+              <input type="text" name="fullName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <!-- Added name property -->
+              <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <!-- Added name property -->
+              <textarea name="message" class="form-control" rows="5" required></textarea>
+            </div>
+            <!-- <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <script type="module">
+    import { initTheme } from '../js/theme.js';
+    import { fetchBaseData} from '../js/api.js';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        initTheme(); 
+
+        function injectDynamicData(instituteData, stats) {
+          const elements = document.querySelectorAll('[data-bind]');
+          elements.forEach(el => {
+            const key = el.getAttribute('data-bind');
+            if (instituteData && instituteData[key] !== undefined) {
+              el.textContent = instituteData[key];
+            } else if (stats && stats[key] !== undefined) {
+              el.textContent = stats[key].toLocaleString();
+            }
+          });
+        }
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+              navbar.style.boxShadow = 'var(--shadow-md)';
+            } else {
+              navbar.style.boxShadow = 'none';
+            }
+          });
+        }
+
+        try{
+
+          const { instituteData, stats } = await fetchBaseData();
+          injectDynamicData(instituteData, stats);  
+
+        } catch (error){
+            console.error('Application failed to load server data:', error);
+        }  
+
+      });
+
+
+  </script>
+</body>
+</html>

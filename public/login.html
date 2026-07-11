@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Panaxhé Périon Institute</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <nav class="navbar" style="position: relative;">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span>Panaxhé<span class="logo-accent">Périon</span></span>
+      </a>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div class="card" style="width: 100%; max-width: 400px; padding: 3rem 2rem;">
+      <div class="text-center mb-8">
+        <h2>Welcome Back</h2>
+        <p class="text-secondary">Sign in to your portal</p>
+      </div>
+      
+      <!-- REMOVED the hardcoded inline redirection -->
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Student / Admin ID</label>
+          <!-- Added id="userId" -->
+          <input type="text" id="userId" class="form-control" placeholder="e.g. PP26-1024" required>
+        </div>
+        <div class="form-group mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <label class="form-label mb-0">Password</label>
+            <a href="#" class="text-primary" style="font-size: 0.75rem;">Forgot?</a>
+          </div>
+          <!-- Added id="password" -->
+          <input type="password" id="password" class="form-control" required>
+        </div>
+        
+        <!-- Placeholder for error messages -->
+        <div id="error-message" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none;"></div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initTheme } from '../js/theme.js';
+    import { login } from '../js/api.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      initTheme();
+
+    const loginForm = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (event) => {
+      // 1. Prevent the page from refreshing automatically
+      event.preventDefault(); 
+      
+      // Clear any existing errors
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+
+      // 2. Grab the inputs from the form
+      const userId = document.getElementById('userId').value;
+      const password = document.getElementById('password').value;
+
+      try {
+
+
+        const data = await login(userId, password);
+          // 4. Role-based Navigation mapping
+          // Assuming your server returns an object like: { success: true, role: "admin" }
+          if (data.role === 'admin') {
+            window.location.href = 'admin/index.html';
+          } else if (data.role === 'student') {
+            window.location.href = `student/index.html?id=${data.id}`; // adjust path to 'student/index.html' if needed
+          } else {
+            errorMessage.textContent = 'Unknown user role. Please contact support.';
+            errorMessage.style.display = 'block';
+          }
+
+      } catch (error) {
+        console.error('Login error:', error);
+        errorMessage.textContent = 'Network error. Could not connect to server.';
+        errorMessage.style.display = 'block';
+      }
+    });
+  }
+
+    });
+
+    
+  </script>
+</body>
+</html>

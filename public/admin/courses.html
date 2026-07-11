@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Manage Courses</title>
+  <link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
+  <style>
+    /* System Workspace Matrix Grid */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 1024px) {
+      .admin-grid {
+        grid-template-columns: 400px 1fr;
+      }
+    }
+    
+    /* Interactive Catalog Table Layout */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-family: var(--font-sans);
+    }
+    .admin-table th, .admin-table td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+    .admin-table th {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .admin-table td {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* Dynamic UI Component Accents */
+    .actions-cell {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+    .btn-danger:hover {
+      background-color: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    /* Configuration Fields */
+    .sticky-form {
+      position: sticky;
+      top: calc(var(--nav-height) + 2rem);
+      max-height: calc(100vh - var(--nav-height) - 4rem);
+      overflow-y: auto;
+    }
+    select.form-control, textarea.form-control {
+      appearance: none;
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+    select.form-control {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1em;
+      padding-right: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <span>Panaxhé<span class="logo-accent"> Périon</span></span> <span style="font-size: 0.9rem; font-family: var(--font-sans); font-weight: 400; margin-left: 0.5rem;" class="badge badge-gold">Course Master</span>
+      </div>
+      <div class="nav-links">
+        <a href="students.html">Students</a>
+        <a href="admins.html">Admins</a>
+        <a href="#" class="text-primary">Manage Courses</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <div class="flex items-center gap-4">
+        <span class="badge badge-primary">Academic Catalog</span>
+        <span class="badge badge-gold" id="course-count">Active Courses: Loading...</span>
+      </div>
+      <h1 class="mt-4 mb-2">Program Curriculum Manager</h1>
+      <p class="mb-1">Provision educational programs, define target metrics, map future outlooks, and open application streams.</p>
+    </div>
+  </header>
+
+  <!-- Main System Workspace -->
+  <main class="section section-light">
+    <div class="container">
+      <div class="admin-grid">
+        
+        <!-- Left Column: Course Builder Form -->
+        <aside>
+          <div class="card sticky-form">
+            <h3 id="form-title" class="mb-6">Deploy New Course</h3>
+            <form id="course-form">
+              <!-- Database Identifier Reference Field -->
+              <input type="hidden" id="course-database-id" value="">
+
+              <div class="grid grid-2" style="gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="crs-id">Course Code ID</label>
+                  <input type="text" id="crs-id" class="form-control" placeholder="e.g., c1" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="crs-field">Field Category</label>
+                  <input type="text" id="crs-field" class="form-control" placeholder="e.g., Technology" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-title">Program Title</label>
+                <input type="text" id="crs-title" class="form-control" placeholder="Applied Artificial Intelligence..." required>
+              </div>
+
+              <div class="grid grid-2" style="gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="crs-duration">Duration Timeframe</label>
+                  <input type="text" id="crs-duration" class="form-control" placeholder="e.g., 6 Months" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="crs-fee">Tuition Fee</label>
+                  <input type="text" id="crs-fee" class="form-control" placeholder="e.g., $1,200" required>
+                </div>
+              </div>
+
+              <div class="grid grid-2" style="gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="crs-intake">Target Intake</label>
+                  <input type="text" id="crs-intake" class="form-control" placeholder="September 2026" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="crs-status">Stream Status</label>
+                  <select id="crs-status" class="form-control" required>
+                    <option value="Enrolling">Enrolling</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Drafting">Drafting</option>
+                    <option value="Upcoming">Upcoming</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-mode">Delivery Modality Mode</label>
+                <input type="text" id="crs-mode" class="form-control" placeholder="e.g., Hybrid" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-description">Core Syllabus Summary Description</label>
+                <textarea id="crs-description" class="form-control" placeholder="Master the algorithms shaping the future..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-future">Future Industry Outlook Impact</label>
+                <textarea id="crs-future" class="form-control" placeholder="Africa needs data scientists to..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-requirements">Academic Requirements</label>
+                <input type="text" id="crs-requirements" class="form-control" placeholder="A-Level Mathematics or equivalent..." required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-roles">Career Target Roles <span style="font-size:0.75rem; font-weight:400; color:var(--text-tertiary);">(Comma-separated)</span></label>
+                <input type="text" id="crs-roles" class="form-control" placeholder="AI Engineer, Data Scientist" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="crs-skills">Core Acquired Skills <span style="font-size:0.75rem; font-weight:400; color:var(--text-tertiary);">(Comma-separated)</span></label>
+                <input type="text" id="crs-skills" class="form-control" placeholder="Python, TensorFlow, Analysis" required>
+              </div>
+
+              <div class="flex gap-2 mt-8">
+                <button type="submit" id="submit-btn" class="btn btn-primary" style="flex: 1;">Save Course Metadata</button>
+                <button type="button" id="cancel-btn" class="btn btn-outline" style="display: none;">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </aside>
+
+        <!-- Right Column: Live Curriculum Records Table -->
+        <section>
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Course Information</th>
+                  <th>Delivery & Term</th>
+                  <th>Tuition</th>
+                  <th>Acquisition Mapping</th>
+                  <th style="width: 140px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="course-table-body">
+                <!-- Entries rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Panaxhé Périon Institute Courses Registry Management.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // import { initTheme } from '../js/theme.js';
+    import { CourseAPI } from '../js/api.js';
+    const themeToggleBtn = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlElement.setAttribute('data-theme', newTheme);
+    });
+
+    let coursesInMemory = [];
+
+    const form = document.getElementById('course-form');
+    const tableBody = document.getElementById('course-table-body');
+    const courseCountBadge = document.getElementById('course-count');
+    const formTitle = document.getElementById('form-title');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    
+    const inputDbId = document.getElementById('course-database-id');
+    const inputId = document.getElementById('crs-id');
+    const inputField = document.getElementById('crs-field');
+    const inputTitle = document.getElementById('crs-title');
+    const inputDuration = document.getElementById('crs-duration');
+    const inputFee = document.getElementById('crs-fee');
+    const inputIntake = document.getElementById('crs-intake');
+    const inputStatus = document.getElementById('crs-status');
+    const inputMode = document.getElementById('crs-mode');
+    const inputDesc = document.getElementById('crs-description');
+    const inputFuture = document.getElementById('crs-future');
+    const inputReq = document.getElementById('crs-requirements');
+    const inputRoles = document.getElementById('crs-roles');
+    const inputSkills = document.getElementById('crs-skills');
+
+    async function syncCurriculumMatrix() {
+      try {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 3rem; color: var(--text-secondary);">Synchronizing course directory...</td></tr>`;
+        coursesInMemory = await CourseAPI.getAll();
+        renderTable(coursesInMemory);
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 4rem; color: #ef4444;">System Error: Failed to retrieve data from Core Network.</td></tr>`;
+      }
+    }
+
+    function renderTable(dataStream) {
+      tableBody.innerHTML = '';
+      courseCountBadge.textContent = `Active Courses: ${dataStream.length}`;
+
+      if (dataStream.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 4rem; color: var(--text-tertiary);">Curriculum empty. Deploy structural options.</td></tr>`;
+        return;
+      }
+
+      dataStream.forEach((course) => {
+        const row = document.createElement('tr');
+        const dbId = course.id; // Using field custom string identifier
+        
+        let statusBadgeClass = 'badge-primary';
+        if(course.status === 'Enrolling') statusBadgeClass = 'badge-gold';
+        
+        const skillsArray = Array.isArray(course.skills) ? course.skills : [];
+        const rolesArray = Array.isArray(course.roles) ? course.roles : [];
+        const skillsHtml = skillsArray.map(s => `<span class="badge" style="margin: 0.15rem 0.15rem 0 0; font-size:0.65rem;">${escapeHtml(s.trim())}</span>`).join('');
+
+        row.innerHTML = `
+          <td>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary" style="font-size:0.7rem;">${escapeHtml(course.id)}</span>
+              <span class="badge" style="font-size:0.7rem;">${escapeHtml(course.field)}</span>
+            </div>
+            <strong style="display:block; font-family:var(--font-serif); font-size:1.15rem; margin-bottom:0.5rem;" class="text-primary">${escapeHtml(course.title)}</strong>
+            <p style="font-size: 0.85rem; line-height:1.4; margin-bottom:0.5rem;">${escapeHtml(course.description)}</p>
+            <div style="font-size: 0.8rem; color: var(--text-tertiary);"><strong>Requirements:</strong> ${escapeHtml(course.requirements)}</div>
+          </td>
+          <td>
+            <div class="mb-2"><strong>Term:</strong> ${escapeHtml(course.duration)}</div>
+            <div class="mb-2" style="font-size:0.85rem;"><strong>Intake:</strong> ${escapeHtml(course.intake)}</div>
+            <span class="badge ${statusBadgeClass}">${escapeHtml(course.status)}</span>
+          </td>
+          <td>
+            <strong style="font-size:1.1rem; color:var(--text-primary);">${escapeHtml(course.fee)}</strong>
+            <div style="font-size:0.8rem; color:var(--text-tertiary); margin-top:0.25rem;">${escapeHtml(course.mode)}</div>
+          </td>
+          <td>
+            <div style="margin-bottom:0.5rem; font-size:0.85rem;"><strong>Target Roles:</strong><br>${escapeHtml(rolesArray.join(', '))}</div>
+            <div><strong>Skills:</strong><br>${skillsHtml}</div>
+          </td>
+          <td>
+            <div class="actions-cell">
+              <button class="btn btn-outline btn-sm" onclick="editCourse('${dbId}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCourse('${dbId}')">Delete</button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Convert arrays using split and filter blank elements
+      const processedRoles = inputRoles.value.split(',').map(item => item.trim()).filter(item => item !== "");
+      const processedSkills = inputSkills.value.split(',').map(item => item.trim()).filter(item => item !== "");
+
+      const courseData = {
+        id: inputId.value.trim(),
+        field: inputField.value.trim(),
+        title: inputTitle.value.trim(),
+        duration: inputDuration.value.trim(),
+        fee: inputFee.value.trim(),
+        intake: inputIntake.value.trim(),
+        status: inputStatus.value,
+        mode: inputMode.value.trim(),
+        description: inputDesc.value.trim(),
+        future: inputFuture.value.trim(),
+        requirements: inputReq.value.trim(),
+        roles: processedRoles,
+        skills: processedSkills
+      };
+
+      const targetDbId = inputDbId.value;
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Writing Metadata Matrix...";
+
+        if (targetDbId === "") {
+          await CourseAPI.create(courseData);
+        } else {
+          await CourseAPI.update(targetDbId, courseData);
+        }
+
+        resetForm();
+        await syncCurriculumMatrix();
+      } catch (error) {
+        alert("Transaction Aborted: Verify connectivity and logic parameters.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = targetDbId === "" ? "Save Course Metadata" : "Update Program";
+      }
+    });
+
+    window.editCourse = function(id) {
+      const target = coursesInMemory.find(c => c.id === id);
+      if (!target) return;
+
+      inputDbId.value = target.id;
+      inputId.value = target.id;
+      inputField.value = target.field;
+      inputTitle.value = target.title;
+      inputDuration.value = target.duration;
+      inputFee.value = target.fee;
+      inputIntake.value = target.intake;
+      inputStatus.value = target.status;
+      inputMode.value = target.mode;
+      inputDesc.value = target.description;
+      inputFuture.value = target.future;
+      inputReq.value = target.requirements;
+      
+      const rolesArray = Array.isArray(target.roles) ? target.roles : [];
+      const skillsArray = Array.isArray(target.skills) ? target.skills : [];
+      inputRoles.value = rolesArray.join(', ');
+      inputSkills.value = skillsArray.join(', ');
+
+      formTitle.textContent = "Modify Course Architecture";
+      submitBtn.textContent = "Update Program";
+      cancelBtn.style.display = "inline-flex";
+    };
+
+    window.deleteCourse = async function(id) {
+      const target = coursesInMemory.find(c => c.id === id);
+      if (!target) return;
+
+      if (confirm(`Completely remove structural catalog records for ${target.title}?`)) {
+        try {
+          await CourseAPI.delete(id);
+          resetForm();
+          await syncCurriculumMatrix();
+        } catch (error) {
+          alert("Purge request dropped: Data link broken.");
+        }
+      }
+    };
+
+    cancelBtn.addEventListener('click', resetForm);
+
+    function resetForm() {
+      form.reset();
+      inputDbId.value = "";
+      formTitle.textContent = "Deploy New Course";
+      submitBtn.textContent = "Save Course Metadata";
+      submitBtn.disabled = false;
+      cancelBtn.style.display = "none";
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    syncCurriculumMatrix();
+  </script>
+</body>
+</html>
