@@ -91,8 +91,8 @@
         <span>Panaxhé<span class="logo-accent"> Périon</span></span>
       </a>
       <div class="nav-links">
-        <a href="#" class="text-primary">Manage Students</a>
-        <a href="courses.html">Courses</a>
+        <a href="#" class="text-primary">Scholar</a>
+        <a href="courses.html">Discipline</a>
         <a href="admins.html">Settings</a>
       </div>
       <div class="nav-actions">
@@ -105,10 +105,10 @@
     <div class="container">
       <div class="flex items-center gap-4">
         <span class="badge badge-primary">Control Center</span>
-        <span class="badge badge-gold" id="student-count">Total Students: Loading...</span>
+        <span class="badge badge-gold" id="student-count">Total Scholars: Loading...</span>
       </div>
-      <h1 class="mt-4 mb-2">Student Directory Database</h1>
-      <p class="mb-1">Create, view, update, and remove student profiles and authorization credentials.</p>
+      <h1 class="mt-4 mb-2">Scholar Directory Database</h1>
+      <p class="mb-1">Create, view, update, and remove scholar profiles and authorization credentials.</p>
     </div>
   </header>
 
@@ -119,13 +119,13 @@
         <!-- Input Form Panel Component -->
         <aside>
           <div class="card sticky-form">
-            <h3 id="form-title" class="mb-6">Register New Student</h3>
+            <h3 id="form-title" class="mb-6">Register New Scholar</h3>
             <form id="student-form">
               <!-- Contextual Tracking State Flag -->
               <input type="hidden" id="is-edit-mode" value="false">
 
               <div class="form-group">
-                <label class="form-label" for="stu-id">Student ID Number</label>
+                <label class="form-label" for="stu-id">Scholar ID Number</label>
                 <input type="text" id="stu-id" class="form-control" placeholder="ds-01" required>
               </div>
 
@@ -168,12 +168,12 @@
               <h4 class="mt-6 mb-2" style="font-size: 1rem; color: var(--text-primary); border-top: 1px solid var(--border-color); padding-top: 1rem;">Curriculum Placement</h4>
               
               <div class="form-group">
-                <label class="form-label" for="stu-course-id">Course Code / ID</label>
+                <label class="form-label" for="stu-course-id">Discipline Code / ID</label>
                 <input type="text" id="stu-course-id" class="form-control" placeholder="cs-01" value="unassigned">
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="stu-course-title">Course Title</label>
+                <label class="form-label" for="stu-course-title">Discipline Title</label>
                 <input type="text" id="stu-course-title" class="form-control" placeholder="Applied Artificial Intelligence & Data Science">
               </div>
 
@@ -188,7 +188,7 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="stu-class-duration">Class Duration</label>
+                <label class="form-label" for="stu-class-duration">Cohort Duration</label>
                 <input type="text" id="stu-class-duration" class="form-control" placeholder="6 Months" value="N/A">
               </div>
 
@@ -231,7 +231,7 @@
               </div>
 
               <div class="flex gap-2 mt-8">
-                <button type="submit" id="submit-btn" class="btn btn-primary" style="flex: 1;">Save Student Record</button>
+                <button type="submit" id="submit-btn" class="btn btn-primary" style="flex: 1;">Save Scholar Record</button>
                 <button type="button" id="cancel-btn" class="btn btn-outline" style="display: none;">Cancel</button>
               </div>
             </form>
@@ -244,7 +244,7 @@
             <table class="admin-table" id="data-table">
               <thead>
                 <tr>
-                  <th>Student Info</th>
+                  <th>Scholar Info</th>
                   <th>ID / Dept</th>
                   <th>Curriculum Track</th>
                   <th>Finances</th>
@@ -265,7 +265,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 Panaxhé Périon Institute Courses Administration Engine.</p>
+        <p>&copy; 2026 Panaxhé Périon Institute Scholars Administration Engine.</p>
       </div>
     </div>
   </footer>
@@ -425,7 +425,7 @@
       } catch (error) {
         alert("Transaction Aborted: Operation processing failed.");
         submitBtn.disabled = false;
-        submitBtn.textContent = isEditMode.value === "false" ? "Save Student Record" : "Update Records";
+        submitBtn.textContent = isEditMode.value === "false" ? "Save Scholar Record" : "Update Records";
       }
     });
 
@@ -459,7 +459,7 @@
       inputTwitter.value = student.twitter || '';
 
       // Set visible controls to editing state configuration modes
-      formTitle.textContent = "Modify Student Record";
+      formTitle.textContent = "Modify Scholar Record";
       submitBtn.textContent = "Update Records";
       cancelBtn.style.display = "inline-flex";
     };
@@ -486,8 +486,8 @@
       form.reset();
       isEditMode.value = "false";
       inputId.disabled = false;
-      formTitle.textContent = "Register New Student";
-      submitBtn.textContent = "Save Student Record";
+      formTitle.textContent = "Register New Scholar";
+      submitBtn.textContent = "Save Scholar Record";
       submitBtn.disabled = false;
       cancelBtn.style.display = "none";
       

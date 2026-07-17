@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Portal - Manage Courses</title>
+  <title>Admin Portal - Manage Discipline</title>
   <link rel="stylesheet" href="../css/style.css">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSI4NSIgeD0iNSIgZm9udC1zaXplPSI5NSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM4YjVjZjYiPsK2PC90ZXh0Pjwvc3ZnPg==">
   <style>
@@ -105,9 +105,9 @@
         <span>Panaxhé<span class="logo-accent"> Périon</span></span> <span style="font-size: 0.9rem; font-family: var(--font-sans); font-weight: 400; margin-left: 0.5rem;" class="badge badge-gold">Course Master</span>
       </div>
       <div class="nav-links">
-        <a href="students.html">Students</a>
+        <a href="students.html">Scholars</a>
         <a href="admins.html">Admins</a>
-        <a href="#" class="text-primary">Manage Courses</a>
+        <a href="#" class="text-primary">Discipline</a>
       </div>
       <div class="nav-actions">
         <button class="theme-toggle" aria-label="Toggle Theme">🌓</button>
@@ -119,8 +119,8 @@
   <header class="page-header">
     <div class="container">
       <div class="flex items-center gap-4">
-        <span class="badge badge-primary">Academic Catalog</span>
-        <span class="badge badge-gold" id="course-count">Active Courses: Loading...</span>
+        <span class="badge badge-primary">Catalog</span>
+        <span class="badge badge-gold" id="course-count">Active Discipline: Loading...</span>
       </div>
       <h1 class="mt-4 mb-2">Program Curriculum Manager</h1>
       <p class="mb-1">Provision educational programs, define target metrics, map future outlooks, and open application streams.</p>
@@ -135,14 +135,14 @@
         <!-- Left Column: Course Builder Form -->
         <aside>
           <div class="card sticky-form">
-            <h3 id="form-title" class="mb-6">Deploy New Course</h3>
+            <h3 id="form-title" class="mb-6">Deploy New Discipline</h3>
             <form id="course-form">
               <!-- Database Identifier Reference Field -->
               <input type="hidden" id="course-database-id" value="">
 
               <div class="grid grid-2" style="gap: 1rem;">
                 <div class="form-group">
-                  <label class="form-label" for="crs-id">Course Code ID</label>
+                  <label class="form-label" for="crs-id">Discipline Code ID</label>
                   <input type="text" id="crs-id" class="form-control" placeholder="e.g., c1" required>
                 </div>
                 <div class="form-group">
@@ -152,7 +152,7 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="crs-title">Program Title</label>
+                <label class="form-label" for="crs-title">Discipline Title</label>
                 <input type="text" id="crs-title" class="form-control" placeholder="Applied Artificial Intelligence..." required>
               </div>
 
@@ -248,7 +248,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 Panaxhé Périon Institute Courses Registry Management.</p>
+        <p>&copy; 2026 Panaxhé Périon Institute Discipline Registry Management.</p>
       </div>
     </div>
   </footer>
@@ -301,7 +301,7 @@
 
     function renderTable(dataStream) {
       tableBody.innerHTML = '';
-      courseCountBadge.textContent = `Active Courses: ${dataStream.length}`;
+      courseCountBadge.textContent = `Active Discipline: ${dataStream.length}`;
 
       if (dataStream.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 4rem; color: var(--text-tertiary);">Curriculum empty. Deploy structural options.</td></tr>`;
